@@ -30,30 +30,6 @@ while true; do
     fi
     ###################################################################
 
-    ################################################################### Check if network is up
-    check_network_reachable() {
-        failure_count=0
-
-        while [ $failure_count -lt 3 ]; do
-            if ping -c1 www.gstatic.com > /dev/null 2>&1; then
-                return 0  # Network is up
-            else
-                failure_count=$((failure_count + 1))
-            fi
-            sleep 1
-        done
-
-        return 1  # Network is down after 3 attempts
-    }
-
-    # Check the network status
-    if ! check_network_reachable; then
-        echo "[-] Network is down. Exiting..."
-        sleep 3
-        exit 1
-    fi
-    ###################################################################
-
     ################################################################### Download pif
     echo "[+] Downloading the pif.json"
 
