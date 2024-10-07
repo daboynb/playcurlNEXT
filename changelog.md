@@ -1,0 +1,1 @@
+V1 -> Minimal version of playcurl, the old one became too heavy and outdated.
