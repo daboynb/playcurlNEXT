@@ -106,11 +106,8 @@ while true; do
         fi
 
         # Kill GMS processes
-        package_names=("com.google.android.gms" "com.google.android.gms.unstable")
-
-        for package in "${package_names[@]}"; do
-            pkill -f "${package}" > /dev/null 2>&1
-        done
+        killall com.google.android.gms
+        killall com.google.android.gms.unstable
     fi
     ###################################################################
 
