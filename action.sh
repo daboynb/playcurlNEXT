@@ -1,3 +1,5 @@
+#!/system/bin/sh
+
 ################################################################### Declare vars
 # Detect busybox
 busybox_path=""
