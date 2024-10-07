@@ -15,7 +15,7 @@ fi
 echo "[+] Downloading the pif.json"
 
 # Temp file to capture errors
-error_log="/data/adb/curl_error.log"
+error_log="/data/adb/playcurl_action_error.log"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     if [ -d /data/adb/modules/tricky_store ]; then
