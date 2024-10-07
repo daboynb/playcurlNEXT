@@ -17,12 +17,12 @@ fi
 echo "[+] Downloading the pif.json"
 
 # Temp file to capture errors
-error_log="/data/adb/playcurl_termux_error.log"
+error_log="/storage/emulated/0/playcurl_termux_error.log"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     if [ -d /data/adb/modules/tricky_store ]; then
         # Download osmosis.json
-        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/osmosis.json > /dev/null 2> "$error_log"; then
+        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/osmosis.json; then
             echo "[+] Successfully downloaded osmosis.json."
         else
             echo "[-] Failed to download osmosis.json."
@@ -30,7 +30,7 @@ if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
         fi
     else
         # If tricky_store does not exist, download device_osmosis.json
-        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/device_osmosis.json > /dev/null 2> "$error_log"; then
+        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/device_osmosis.json; then
             echo "[+] Successfully downloaded device_osmosis.json."
         else
             echo "[-] Failed to download device_osmosis.json."
@@ -39,7 +39,7 @@ if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     fi
 else
     # Download chiteroman.json
-    if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/main/chiteroman.json" -o /data/adb/pif.json > /dev/null 2> "$error_log"; then
+    if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/main/chiteroman.json" -o /data/adb/pif.json; then
         echo "[+] Successfully downloaded chiteroman.json."
     else
         echo "[-] Failed to download chiteroman.json."
@@ -71,6 +71,3 @@ fi
 ################################################################### 
 # Sleep for 3 seconds after the echo
 sleep 3
-
-# Clean up the error log file
-rm -f "$error_log"

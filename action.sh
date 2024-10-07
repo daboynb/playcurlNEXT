@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 ################################################################### Declare vars
 # Detect busybox
 busybox_path=""
@@ -17,7 +15,7 @@ fi
 echo "[+] Downloading the pif.json"
 
 # Temp file to capture errors
-error_log="/data/adb/playcurl_action_error.log"
+error_log="/storage/emulated/0/playcurl_action_error.log"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     if [ -d /data/adb/modules/tricky_store ]; then
@@ -71,6 +69,3 @@ fi
 ################################################################### 
 # Sleep for 3 seconds after the echo
 sleep 3
-
-# Clean up the error log file
-rm -f "$error_log"
