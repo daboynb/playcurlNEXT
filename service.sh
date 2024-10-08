@@ -27,32 +27,31 @@ while true; do
     echo "Starting...." > "$log"
 
     ################################################################### Check for internet
-    # Start time for the ping duration (3 minutes)
-    end_time=$((SECONDS + 180))  # 180 seconds (3 minutes)
-
-    while true; do
+    max_attempts=5  
+    for attempt in $(seq 1 $max_attempts); do
         # Ping gstatic once
         ping -c 1 gstatic.com > /dev/null 2>&1
 
         # Check if the ping was successful
         if [ $? -eq 0 ]; then
             current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
-            echo "$current_date_timePing successful: Internet connection is available." >> "$log"
+            echo "$current_date_time Ping successful: Internet connection is available." >> "$log"
             break  # Exit the loop if the ping is successful
         else
             current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
-            echo "$current_date_time Ping failed: No internet connection." >> "$log"
+            echo "$current_date_time Ping failed: No internet connection. Attempt $attempt of $max_attempts." >> "$log"
         fi
 
-        # Check if the time has exceeded 3 minutes
-        if [ "$SECONDS" -ge 180 ]; then
-            current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
-            echo "$current_date_time Exceeded 3 minutes of pinging without success." >> "$log"
-            break  # Exit if it has been 3 minutes
+        # If not the last attempt, wait 15 seconds before retrying
+        if [ "$attempt" -lt "$max_attempts" ]; then
+            sleep 15
         fi
-
-        sleep 5  # Wait for 5 seconds before the next ping
     done
+
+    if [ "$attempt" -eq "$max_attempts" ]; then
+        current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+        echo "$current_date_time Exceeded $max_attempts attempts without success." >> "$log"
+    fi
     ###################################################################
 
     ################################################################### Download pif
