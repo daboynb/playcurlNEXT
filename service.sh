@@ -1,4 +1,3 @@
-
 ################################################################### Check if booted
 until [ "$(getprop sys.boot_completed)" = "1" ]; do
     echo "Waiting for boot to complete..."
@@ -19,39 +18,44 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
-################################################################### Check for internet
-# Start time for the ping duration (3 minutes)
-end_time=$((SECONDS + 180))  # 180 seconds (3 minutes)
-
-while true; do
-    # Ping gstatic once
-    ping -c 1 gstatic.com > /dev/null 2>&1
-
-    # Check if the ping was successful
-    if [ $? -eq 0 ]; then
-        echo "Ping successful: Internet connection is available."
-        break  # Exit the loop if the ping is successful
-    else
-        echo "Ping failed: No internet connection."
-    fi
-
-    # Check if the time has exceeded 3 minutes
-    if [ "$SECONDS" -ge 180 ]; then
-        echo "Exceeded 3 minutes of pinging without success."
-        break  # Exit if it has been 3 minutes
-    fi
-
-    sleep 5  # Wait for 5 seconds before the next ping
-done
-###################################################################
-
 ################################################################### While 
 while true; do
 
-    ################################################################### Download pif
+    # Log
     log="/storage/emulated/0/playcurl_service.log"
     rm -f "$log"
     echo "Starting...." > "$log"
+
+    ################################################################### Check for internet
+    # Start time for the ping duration (3 minutes)
+    end_time=$((SECONDS + 180))  # 180 seconds (3 minutes)
+
+    while true; do
+        # Ping gstatic once
+        ping -c 1 gstatic.com > /dev/null 2>&1
+
+        # Check if the ping was successful
+        if [ $? -eq 0 ]; then
+            current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+            echo "$current_date_timePing successful: Internet connection is available." >> "$log"
+            break  # Exit the loop if the ping is successful
+        else
+            current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+            echo "$current_date_time Ping failed: No internet connection." >> "$log"
+        fi
+
+        # Check if the time has exceeded 3 minutes
+        if [ "$SECONDS" -ge 180 ]; then
+            current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+            echo "$current_date_time Exceeded 3 minutes of pinging without success." >> "$log"
+            break  # Exit if it has been 3 minutes
+        fi
+
+        sleep 5  # Wait for 5 seconds before the next ping
+    done
+    ###################################################################
+
+    ################################################################### Download pif
     if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
         if [ -d /data/adb/modules/tricky_store ]; then
             # Download osmosis.json
@@ -80,14 +84,13 @@ while true; do
             echo "$current_date_time [-] Failed to download chiteroman.json." >> "$log"
         fi
     fi
-
     ###################################################################
 
     ################################################################### Check unsigned rom
     # Check the keys of /system/etc/security/otacerts.zip
     get_keys=$("$busybox_path" unzip -l /system/etc/security/otacerts.zip)
 
-if echo "$get_keys" | "$busybox_path" grep -q test; then
+    if echo "$get_keys" | "$busybox_path" grep -q test; then
         # Check for the presence of migrate.sh and use the appropriate file path
         if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
             $busybox_path sed -i 's/"spoofSignature": *0/"spoofSignature": 1/g' /data/adb/modules/playintegrityfix/custom.pif.json
