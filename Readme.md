@@ -12,7 +12,7 @@ DO NOT USE UNTIL STABLE.
 
 - At every boot the fp will be pulled
 
-- Every 30 mins the updated fp will be downloaded (you can change the time in seconds in "/data/adb/modules/playcurlNEXT/seconds.txt")
+- Every 30 mins the updated fp will be downloaded
 
 # Additional
 

@@ -103,15 +103,7 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
     ###################################################################
 
     ################################################################### Check interval
-    filepath="/data/adb/modules/playcurlNEXT/seconds.txt"
-    if [ -f "$filepath" ]; then
-        current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
-        time_interval=$(cat "$filepath")
-        echo "$current_date_time Read time interval from $filepath: $time_interval seconds" >> "$log"
-        sleep "$time_interval"
-    else
-        echo "$current_date_time [-] $filepath not found, sleeping for default 300 seconds..." >> "$log"
-        sleep 300
-    fi
+        echo "Sleeping for 1800 seconds..." >> "$log"
+        sleep 1800
 done
 ###################################################################

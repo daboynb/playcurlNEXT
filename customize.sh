@@ -11,10 +11,3 @@ rm -rf $MODPATH/system/bin/arm64-v8a
 rm -rf $MODPATH/system/bin/armeabi-v7a 
 rm -rf $MODPATH/system/bin/x86 
 rm -rf $MODPATH/system/bin/x86_64
-
-echo ""
-ui_print "You can edit /data/adb/modules/playcurlNEXT/seconds.txt"
-ui_print "to specify the seconds between each check"
-ui_print "and then reboot to apply."
-echo ""
-ui_print "The default value is 1800 (30 mins)"
