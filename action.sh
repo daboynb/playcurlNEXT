@@ -11,11 +11,10 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
+
+
 ################################################################### Download pif
 echo "[+] Downloading the pif.json"
-
-# Temp file to capture errors
-error_log="/storage/emulated/0/playcurl_action_error.log"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     if [ -d /data/adb/modules/tricky_store ]; then
@@ -24,7 +23,6 @@ if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
             echo "[+] Successfully downloaded osmosis.json."
         else
             echo "[-] Failed to download osmosis.json."
-            echo "Error: $(cat $error_log)"
         fi
     else
         # If tricky_store does not exist, download device_osmosis.json
@@ -32,7 +30,6 @@ if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
             echo "[+] Successfully downloaded device_osmosis.json."
         else
             echo "[-] Failed to download device_osmosis.json."
-            echo "Error: $(cat $error_log)"
         fi
     fi
 else
@@ -46,6 +43,8 @@ else
 fi
 
 ###################################################################
+
+
 
 ################################################################### Check unsigned rom
 # Check the keys of /system/etc/security/otacerts.zip

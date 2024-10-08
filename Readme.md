@@ -1,6 +1,8 @@
-Rewrite of playcurl, work in progress.
+If you wanna help me
 
-- Added action.sh
+<a href="https://www.buymeacoffee.com/daboynb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
+Rewrite of playcurl, work in progress.
 
 DO NOT USE UNTIL STABLE.
 
@@ -14,6 +16,6 @@ DO NOT USE UNTIL STABLE.
 
 # Additional
 
-- You can trigger the action too if you have magisk canary
+- You can trigger the action too (action.sh) if you have magisk canary
 
 - You can run the script on termux too, the command is : su -c 'fp'
