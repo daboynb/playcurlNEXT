@@ -4,8 +4,6 @@ If you'd like to support me:
 
 THis is a rewrite of Playcurl, the old version became outdated as many things have changed. Paradoxically, this is more lightweight and easier to use.
 
-**DO NOT USE UNTIL STABLE.**
-
 # How to Use
 
 - Flash the module.
