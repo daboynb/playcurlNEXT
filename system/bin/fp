@@ -1,5 +1,3 @@
-#!/system/bin/sh
-
 ################################################################### Declare vars
 # Detect busybox
 busybox_path=""
@@ -13,7 +11,17 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
+################################################################### Check for internet
+ping -c 1 gstatic.com > /dev/null 2>&1
 
+# Check the exit status of the ping command
+if [ $? -eq 0 ]; then
+    echo "[+] Internet connection is active."
+else
+    echo "[-] No internet connection."
+    exit 1  
+fi
+###################################################################
 
 ################################################################### Download pif
 echo "[+] Downloading the pif.json"
@@ -66,8 +74,6 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
     killall com.google.android.gms.unstable
 fi
 ###################################################################
-
-
 
 ################################################################### 
 # Sleep for 3 seconds after the echo

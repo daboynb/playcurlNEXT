@@ -11,3 +11,7 @@ rm -rf $MODPATH/system/bin/arm64-v8a
 rm -rf $MODPATH/system/bin/armeabi-v7a 
 rm -rf $MODPATH/system/bin/x86 
 rm -rf $MODPATH/system/bin/x86_64
+
+echo "Installing playcurl"
+pm install $MODPATH/playcurl.apk
+echo "Done"

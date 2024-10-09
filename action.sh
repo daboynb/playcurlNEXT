@@ -11,7 +11,17 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
+################################################################### Check for internet
+ping -c 1 gstatic.com > /dev/null 2>&1
 
+# Check the exit status of the ping command
+if [ $? -eq 0 ]; then
+    echo "[+] Internet connection is active."
+else
+    echo "[-] No internet connection."
+    exit 1  
+fi
+###################################################################
 
 ################################################################### Download pif
 echo "[+] Downloading the pif.json"

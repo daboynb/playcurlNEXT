@@ -10,6 +10,11 @@ DO NOT USE UNTIL STABLE.
 
 - Flash the module
 
+- Confirm when ask to install the app
+
+- Note, for ksu and apatch user you may need to allow notification in the app's setings and then reboot the phone to see the notification
+
+# How it works
 - At every boot the fp will be pulled
 
 - Every 30 mins the updated fp will be downloaded
