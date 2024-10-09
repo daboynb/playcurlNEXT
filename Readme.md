@@ -7,7 +7,7 @@ This is a rewrite of Playcurl, the old version became outdated as many things ha
 # How to Use
 
 - Flash the module.
-- Confirm when prompted to install the app.
+- Confirm when prompted to install the app and reboot.
 - Note: For KSU and Apatch users, you may need to enable notifications in the app's settings and then reboot the phone to see the notification.
 
 # How it Works
