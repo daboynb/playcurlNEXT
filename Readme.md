@@ -2,7 +2,7 @@ If you'd like to support me:
 
 <a href="https://www.buymeacoffee.com/daboynb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-Rewriting of Playcurl, work in progress.
+THis is a rewrite of Playcurl, the old version became outdated as many things have changed. Paradoxically, this is more lightweight and easier to use.
 
 **DO NOT USE UNTIL STABLE.**
 
