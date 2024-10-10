@@ -24,3 +24,8 @@ This is a rewrite of Playcurl, the old version became outdated as many things ha
 Android kills the process while in deep sleep, so even if I set a 30-minute interval, it will be random. 
 
 Instead, the app is precise, and since it doesn't operate during the night, it won't excessively drain the battery.
+
+
+# Battery
+
+If you think that the app is consuming your battery, you can uninstall it and trigger the FP command via termux or magisk action
