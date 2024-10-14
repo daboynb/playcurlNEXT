@@ -1,1 +1,1 @@
-V1.01 -> Fix action.sh.
+V1.02 -> Fix kill gms bug.

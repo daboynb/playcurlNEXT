@@ -11,18 +11,6 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
-################################################################### Check for internet
-ping -c 1 gstatic.com > /dev/null 2>&1
-
-# Check the exit status of the ping command
-if [ $? -eq 0 ]; then
-    echo "[+] Internet connection is active."
-else
-    echo "[-] No internet connection."
-    exit 1  
-fi
-###################################################################
-
 ################################################################### Download pif
 echo "[+] Downloading the pif.json"
 
@@ -54,8 +42,6 @@ fi
 
 ###################################################################
 
-
-
 ################################################################### Check unsigned rom
 # Check the keys of /system/etc/security/otacerts.zip
 get_keys=$("$busybox_path" unzip -l /system/etc/security/otacerts.zip)
@@ -68,13 +54,14 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
     else
         $busybox_path sed -i 's/"spoofSignature": *"false"/"spoofSignature": "true"/g' /data/adb/pif.json
     fi
-
-    # Kill GMS processes
-    killall com.google.android.gms
-    killall com.google.android.gms.unstable
 fi
+
+# Kill GMS processes
+killall com.google.android.gms
+killall com.google.android.gms.unstable
 ###################################################################
 
 ################################################################### 
 # Sleep for 3 seconds after the echo
 sleep 3
+###################################################################

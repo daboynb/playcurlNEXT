@@ -1,7 +1,7 @@
 id=playcurlNEXT
 name=playcurlNEXT
-version=v1.01
-versionCode=101
+version=v1.02
+versionCode=102
 author=daboynb
 description=Fingerprint downloader for play integrity fix.
 updateJson=https://raw.githubusercontent.com/daboynb/playcurlNEXT/main/update.json
