@@ -1,1 +1,1 @@
-V1.02 -> Fix kill gms bug.
+V1.03 -> Finally added cron support! The tasker app is no longer necessary!
