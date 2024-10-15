@@ -34,8 +34,32 @@ chmod +x /data/local/tmp/fp.sh
 # Ensure crontab directory exists
 mkdir -p /data/cron
 
-# Add the cron job to run every 30 minutes
-echo "*/30 * * * * /data/local/tmp/fp.sh" > /data/cron/root
+# Read minutes from the file (default to 60 minutes if the file doesn't exist or has an invalid value)
+minutes=60
+if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
+    read_minutes=$(cat /data/adb/modules/playcurlNEXT/minutes.txt)
+    
+    # Ensure it's a valid positive integer
+    if [ "$read_minutes" -ge 1 ] 2>/dev/null; then
+        # Ensure the value is between 1 and 1440 minutes
+        if [ "$read_minutes" -gt 1440 ]; then
+            minutes=1440
+            echo "Minutes value exceeds 24 hours. Setting to maximum of 1440 minutes (24 hours)."
+        elif [ "$read_minutes" -lt 1 ]; then
+            minutes=1
+            echo "Minutes value is below 1 minute. Setting to minimum of 1 minute."
+        else
+            minutes=$read_minutes
+        fi
+    else
+        echo "Invalid value in minutes.txt. Defaulting to 1 hour."
+    fi
+else
+    echo "File minutes.txt is missing. Defaulting to 1 hour."
+fi
+
+# Set up the cron job with the specified interval in minutes
+echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/root
 
 # Init log
 echo "Phone started..." > /data/adb/playcurl.log

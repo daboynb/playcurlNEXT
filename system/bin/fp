@@ -1,3 +1,5 @@
+#!/system/bin/sh
+
 ################################################################### Declare vars
 # Detect busybox
 busybox_path=""
@@ -11,34 +13,52 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
+################################################################### Read mode.txt and decide branch
+# Default to 'main' branch
+branch="main"
+
+if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
+    mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
+
+    # If the value in mode.txt is "random", use the random branch
+    if [ "$mode_value" = "random" ]; then
+        branch="random"
+        echo "[*] Using 'random' branch based on mode.txt"
+    else
+        echo "[*] Using 'main' branch based on mode.txt"
+    fi
+else
+    echo "[*] mode.txt not found, using 'main' branch by default"
+fi
+###################################################################
+
 ################################################################### Download pif
 echo "[*] Start of the script"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
     if [ -d /data/adb/modules/tricky_store ]; then
-        # Download osmosis.json
-        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/osmosis.json >/dev/null 2>&1; then
-            echo "[+] Successfully downloaded osmosis.json."
+        # Download osmosis.json from the selected branch
+        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json "https://raw.githubusercontent.com/daboynb/autojson/$branch/osmosis.json" >/dev/null 2>&1; then
+            echo "[+] Successfully downloaded osmosis.json from $branch branch."
         else
-            echo "[-] Failed to download osmosis.json."
+            echo "[-] Failed to download osmosis.json from $branch branch."
         fi
     else
-        # If tricky_store does not exist, download device_osmosis.json
-        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json https://raw.githubusercontent.com/daboynb/autojson/main/device_osmosis.json >/dev/null 2>&1; then
-            echo "[+] Successfully downloaded device_osmosis.json."
+        # If tricky_store does not exist, download device_osmosis.json from the selected branch
+        if /system/bin/curl -o /data/adb/modules/playintegrityfix/custom.pif.json "https://raw.githubusercontent.com/daboynb/autojson/$branch/device_osmosis.json" >/dev/null 2>&1; then
+            echo "[+] Successfully downloaded device_osmosis.json from $branch branch."
         else
-            echo "[-] Failed to download device_osmosis.json."
+            echo "[-] Failed to download device_osmosis.json from $branch branch."
         fi
     fi
 else
-    # Download chiteroman.json
-    if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/main/chiteroman.json" -o /data/adb/pif.json >/dev/null 2>&1; then
-        echo "[+] Successfully downloaded chiteroman.json."
+    # Download chiteroman.json from the selected branch
+    if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/$branch/chiteroman.json" -o /data/adb/pif.json >/dev/null 2>&1; then
+        echo "[+] Successfully downloaded chiteroman.json from $branch branch."
     else
-        echo "[-] Failed to download chiteroman.json."
+        echo "[-] Failed to download chiteroman.json from $branch branch."
     fi
 fi
-
 ###################################################################
 
 ################################################################### Check unsigned rom
