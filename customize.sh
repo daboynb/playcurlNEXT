@@ -21,6 +21,11 @@ if [ -d "/data/adb/modules/playcurl" ]; then
     touch "/data/adb/modules/playcurl/remove"
 fi
 
+# Old playcurl remove 
+if [ -d "/data/adb/modules/playcurlNEXT" ]; then
+    touch "/data/adb/modules/playcurlNEXT/remove"
+fi
+
 # Allow all the scripts to be executable
 chmod +x $MODPATH/*.sh
 

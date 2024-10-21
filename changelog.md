@@ -1,1 +1,1 @@
-V1.05 -> fix for https://t.me/PifNEXT/53.
+V1.06 -> fix for duplicate folders.
