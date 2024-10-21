@@ -31,7 +31,7 @@ Reboot to apply.
 - You can manually trigger the action (`action.sh`) if you're using Magisk Canary.
 - You can also run the script in Termux with the following command: su -c 'fp'
 
-## Credits
+# Credits
 
 The backend of this module (autojson repo), was created using **Shell Scripts** that have been carefully adapted and customized from the original work of the **PlayIntegrityFork** module.
 
