@@ -17,8 +17,8 @@ fi
 # Default to 'main' branch
 branch="main"
 
-if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
-    mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
+if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
+    mode_value=$(cat /data/adb/modules/playcurl_NEXT/mode.txt)
 
     # If the value in mode.txt is "random", use the random branch
     if [ "$mode_value" = "random" ]; then

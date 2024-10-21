@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 # Source external functions
-. /data/adb/modules/playcurlNEXT/common_func.sh
+. /data/adb/modules/playcurl_NEXT/common_func.sh
 
 # Check if boot is completed
 until [ "$(getprop sys.boot_completed)" = "1" ]; do
@@ -28,7 +28,7 @@ fi
 ###################################################################
 
 # Copy the cron script and set execute permission
-cp /data/adb/modules/playcurlNEXT/action.sh /data/local/tmp/fp.sh
+cp /data/adb/modules/playcurl_NEXT/action.sh /data/local/tmp/fp.sh
 chmod +x /data/local/tmp/fp.sh
 
 # Ensure crontab directory exists
@@ -36,8 +36,8 @@ mkdir -p /data/cron
 
 # Read minutes from the file (default to 60 minutes if the file doesn't exist or has an invalid value)
 minutes=60
-if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
-    read_minutes=$(cat /data/adb/modules/playcurlNEXT/minutes.txt)
+if [ -f "/data/adb/modules/playcurl_NEXT/minutes.txt" ]; then
+    read_minutes=$(cat /data/adb/modules/playcurl_NEXT/minutes.txt)
     
     # Ensure it's a valid positive integer
     if [ "$read_minutes" -ge 1 ] 2>/dev/null; then

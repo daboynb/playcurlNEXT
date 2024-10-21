@@ -16,13 +16,13 @@ This is a rewrite of Playcurl, the old version became outdated as many things ha
 # How to configure extra settings
 
 1) You can set your own check interval by specifying the number of minutes inside the file: 
-        `/data/adb/modules/playcurlNEXT/minutes.txt` 
+        `/data/adb/modules/playcurl_NEXT/minutes.txt` 
 (minimum 1 minute, maximum 1400 minutes)
 Reboot to apply.   
 
 2) You can set whether you want to use a random beta FP from the last month (since multiple are available) or the latest one.
     - Follow these steps to configure:
-        a) Open the file: `/data/adb/modules/playcurlNEXT/mode.txt`
+        a) Open the file: `/data/adb/modules/playcurl_NEXT/mode.txt`
         b) Write `random` in the file if you want to use a random FP.
         c) Write `normal` or leave the file empty if you want to use the latest one.
 
