@@ -5,7 +5,7 @@
 This is a rewrite of Playcurl, the old version became outdated as many things have changed. Paradoxically, this is more lightweight and easier to use.
 
 # How to Use
-- Flash the module.
+- Flash the module. (You must have play integrity fix installed)
 - Reboot.
 - Check for integity.
 
@@ -30,6 +30,23 @@ Reboot to apply.
 
 - You can manually trigger the action (`action.sh`) if you're using Magisk Canary.
 - You can also run the script in Termux with the following command: su -c 'fp'
+
+# Recommended setups
+
+Instructions for device integrity :
+
+                - Download play integrity fix
+                - Download playcurl_NEXT
+                - Install both
+                - Reboot 
+                - Open Spic and check for integrity
+
+Instructions for strong integrity on custom rom:
+        
+                - Install shamiko 
+                - Install Tricky_store and put a valid keybox inside /data/adb/Tricky_store
+                - Install Pif  
+                - enjoy
 
 # Credits
 

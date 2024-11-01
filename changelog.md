@@ -1,1 +1,1 @@
-V1.06 -> fix for duplicate folders.
+V1.07 -> Bring back the fpd command to troubleshooting.

@@ -1,5 +1,6 @@
-# Set permissions for the fp binay
+# Set permissions for the binaries
 set_perm $MODPATH/system/bin/fp root root 0777
+set_perm $MODPATH/system/bin/fpd root root 0777
 
 # Detect and move curl to system
 mv -f $MODPATH/system/bin/$ABI/curl $MODPATH/system/bin
