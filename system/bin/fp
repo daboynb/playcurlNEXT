@@ -1,7 +1,8 @@
 #!/system/bin/sh
 
-################################################################### Declare vars
-# Detect busybox
+###################################################################
+# Declare variables and detect busybox path
+###################################################################
 busybox_path=""
 
 if [ -f "/data/adb/magisk/busybox" ]; then
@@ -11,16 +12,15 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 fi
-###################################################################
 
-################################################################### Read mode.txt and decide branch
-# Default to 'main' branch
-branch="main"
+###################################################################
+# Read mode.txt and determine branch (main or random)
+###################################################################
+branch="main"  # Default branch
 
 if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
     mode_value=$(cat /data/adb/modules/playcurl_NEXT/mode.txt)
 
-    # If the value in mode.txt is "random", use the random branch
     if [ "$mode_value" = "random" ]; then
         branch="random"
         echo "[*] Using 'random' branch based on mode.txt"
@@ -30,9 +30,10 @@ if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
 else
     echo "[*] mode.txt not found, using 'main' branch by default"
 fi
-###################################################################
 
-################################################################### Download pif
+###################################################################
+# Download pif configuration file based on branch and conditions
+###################################################################
 echo "[*] Start of the script"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
@@ -59,15 +60,14 @@ else
         echo "[-] Failed to download chiteroman.json from $branch branch."
     fi
 fi
-###################################################################
 
-################################################################### Check unsigned rom
+###################################################################
+# Check for unsigned ROM and modify JSON configurations
+###################################################################
 # Check the keys of /system/etc/security/otacerts.zip
 get_keys=$("$busybox_path" unzip -l /system/etc/security/otacerts.zip)
 
 if echo "$get_keys" | "$busybox_path" grep -q test; then
-
-    # Check for the presence of migrate.sh and use the appropriate file path
     if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
         $busybox_path sed -i 's/"spoofSignature": *0/"spoofSignature": 1/g' /data/adb/modules/playintegrityfix/custom.pif.json
     else
@@ -75,10 +75,14 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
     fi
 fi
 
-# Kill GMS processes
+###################################################################
+# Terminate Google Play Services processes to apply changes
+###################################################################
 killall com.google.android.gms >/dev/null 2>&1
 killall com.google.android.gms.unstable >/dev/null 2>&1
 
+###################################################################
+# End of Script
+###################################################################
 echo "[*] End of the script"
 echo ""
-###################################################################

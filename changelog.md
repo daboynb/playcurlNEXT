@@ -1,1 +1,1 @@
-V1.07 -> Bring back the fpd command to troubleshooting.
+V1.08 -> Fixed some code and disabled pihooks.
