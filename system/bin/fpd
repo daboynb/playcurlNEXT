@@ -1,8 +1,7 @@
 #!/system/bin/sh
 
-###################################################################
-# Declare variables and detect busybox path
-###################################################################
+################################################################### Declare vars
+# Detect busybox
 busybox_path=""
 
 if [ -f "/data/adb/magisk/busybox" ]; then
@@ -12,10 +11,9 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 fi
+###################################################################
 
-###################################################################
-# Read mode.txt and decide branch
-###################################################################
+################################################################### Read mode.txt and decide branch
 # Default to 'main' branch
 branch="main"
 
@@ -32,10 +30,9 @@ if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
 else
     echo "[*] mode.txt not found, using 'main' branch by default"
 fi
+###################################################################
 
-###################################################################
-# Download pif based on detected branch and conditions
-###################################################################
+################################################################### Download pif
 echo "[*] Start of the script"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
@@ -62,15 +59,15 @@ else
         echo "[-] Failed to download chiteroman.json from $branch branch."
     fi
 fi
+###################################################################
 
-###################################################################
-# Check for unsigned ROM by examining otacerts.zip keys
-###################################################################
+################################################################### Check unsigned rom
+# Check the keys of /system/etc/security/otacerts.zip
 get_keys=$("$busybox_path" unzip -l /system/etc/security/otacerts.zip)
 
 if echo "$get_keys" | "$busybox_path" grep -q test; then
 
-    # Check for the presence of migrate.sh and modify JSON accordingly
+    # Check for the presence of migrate.sh and use the appropriate file path
     if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
         $busybox_path sed -i 's/"spoofSignature": *0/"spoofSignature": 1/g' /data/adb/modules/playintegrityfix/custom.pif.json
     else
@@ -78,23 +75,28 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
     fi
 fi
 
-###################################################################
-# Kill Google Play Services (GMS) processes to apply changes
-###################################################################
+# Kill GMS processes
 killall com.google.android.gms >/dev/null 2>&1
 killall com.google.android.gms.unstable >/dev/null 2>&1
 
 ###################################################################
-# Disable all third-party modules for testing incompatibility
+
+## Now disable all the useless modules                           ## 
+
 ###################################################################
+# Disable other modules for testing incompatibility
 list="$("$busybox_path" find /data/adb/modules/* -prune -type d)"
 for module in $list; do
     touch "$module/disable"
 done
 
-###################################################################
-# Re-enable essential modules
-###################################################################
+# Activate back the necessary modules
+
+# playcurl_NEXT
+rm /data/adb/modules/playcurl_NEXT/disable > /dev/null 2>/dev/null
+
+# Shamiko 
+rm /data/adb/modules/zygisk_shamiko/disable > /dev/null 2>/dev/null
 
 # Play integrity fix
 rm /data/adb/modules/playintegrityfix/disable > /dev/null 2>/dev/null
@@ -102,9 +104,6 @@ rm /data/adb/modules/playintegrityfix/disable > /dev/null 2>/dev/null
 # Zygisk Next
 rm /data/adb/modules/zygisksu/disable > /dev/null 2>/dev/null
 
-###################################################################
-# Reboot to apply changes
-###################################################################
 reboot >/dev/null 2>&1
 
 echo "The phone should have rebooted by itself. If you are reading this, reboot manually!"
