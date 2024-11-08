@@ -1,9 +1,8 @@
 #!/system/bin/sh
 
-# Source external functions
-. /data/adb/modules/playcurl_NEXT/common_func.sh
-
+###################################################################
 # Check if boot is completed
+###################################################################
 until [ "$(getprop sys.boot_completed)" = "1" ]; do
     sleep 10
 done
@@ -11,7 +10,9 @@ done
 # Sleep 10 seconds 
 sleep 10
 
-################################################################### Declare vars
+###################################################################
+# Declare vars
+###################################################################
 # Detect busybox path
 busybox_path=""
 
@@ -27,13 +28,20 @@ else
 fi
 ###################################################################
 
+###################################################################
+# Copy and set up cron script
+###################################################################
 # Copy the cron script and set execute permission
 cp /data/adb/modules/playcurl_NEXT/action.sh /data/local/tmp/fp.sh
 chmod +x /data/local/tmp/fp.sh
 
 # Ensure crontab directory exists
 mkdir -p /data/cron
+###################################################################
 
+###################################################################
+# Read minutes from configuration
+###################################################################
 # Read minutes from the file (default to 60 minutes if the file doesn't exist or has an invalid value)
 minutes=60
 if [ -f "/data/adb/modules/playcurl_NEXT/minutes.txt" ]; then
@@ -57,10 +65,18 @@ if [ -f "/data/adb/modules/playcurl_NEXT/minutes.txt" ]; then
 else
     echo "File minutes.txt is missing. Defaulting to 1 hour."
 fi
+###################################################################
 
+###################################################################
+# Set up the cron job
+###################################################################
 # Set up the cron job with the specified interval in minutes
 echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/root
+###################################################################
 
+###################################################################
+# Initialize and run scripts
+###################################################################
 # Init log
 echo "Phone started..." > /data/adb/playcurl.log
 echo "" >> /data/adb/playcurl.log
@@ -70,3 +86,4 @@ echo "" >> /data/adb/playcurl.log
 
 # Conf cron
 "$busybox_path" crond -c /data/cron -L /data/adb/playcurl.log 
+###################################################################

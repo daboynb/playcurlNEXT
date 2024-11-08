@@ -1,6 +1,8 @@
 #!/system/bin/sh
 
-################################################################### Declare vars
+###################################################################
+# Declare vars
+###################################################################
 # Detect busybox
 busybox_path=""
 
@@ -13,7 +15,9 @@ elif [ -f "/data/adb/ap/bin/busybox" ]; then
 fi
 ###################################################################
 
-################################################################### Read mode.txt and decide branch
+###################################################################
+# Read mode.txt and decide branch
+###################################################################
 # Default to 'main' branch
 branch="main"
 
@@ -32,7 +36,9 @@ else
 fi
 ###################################################################
 
-################################################################### Download pif
+###################################################################
+# Download pif
+###################################################################
 echo "[*] Start of the script"
 
 if [ -f /data/adb/modules/playintegrityfix/migrate.sh ]; then
@@ -61,7 +67,9 @@ else
 fi
 ###################################################################
 
-################################################################### Check unsigned rom
+###################################################################
+# Check unsigned rom
+###################################################################
 # Check the keys of /system/etc/security/otacerts.zip
 get_keys=$("$busybox_path" unzip -l /system/etc/security/otacerts.zip)
 
@@ -74,35 +82,35 @@ if echo "$get_keys" | "$busybox_path" grep -q test; then
         $busybox_path sed -i 's/"spoofSignature": *"false"/"spoofSignature": "true"/g' /data/adb/pif.json
     fi
 fi
-
-# Kill GMS processes
-killall com.google.android.gms >/dev/null 2>&1
-killall com.google.android.gms.unstable >/dev/null 2>&1
-
 ###################################################################
-
-## Now disable all the useless modules                           ## 
 
 ###################################################################
 # Disable other modules for testing incompatibility
+###################################################################
+# Get a list of directories under /data/adb/modules
 list="$("$busybox_path" find /data/adb/modules/* -prune -type d)"
 for module in $list; do
+    # Create a 'disable' file in each module directory
     touch "$module/disable"
 done
 
-# Activate back the necessary modules
-
-# playcurl_NEXT
-rm /data/adb/modules/playcurl_NEXT/disable > /dev/null 2>/dev/null
-
-# Shamiko 
-rm /data/adb/modules/zygisk_shamiko/disable > /dev/null 2>/dev/null
-
-# Play integrity fix
+# Remove the 'disable' file to enable the Play Integrity Fix module
 rm /data/adb/modules/playintegrityfix/disable > /dev/null 2>/dev/null
 
-# Zygisk Next
-rm /data/adb/modules/zygisksu/disable > /dev/null 2>/dev/null
+# Check if busybox path is specific to Magisk
+if [ "$busybox_path" = "/data/adb/magisk/busybox" ]; then
+    # Check if Zygisk is enabled in Magisk settings
+    [ ! "$(magisk --sqlite "SELECT value FROM settings WHERE key='zygisk';")" == "value=0" ] && {
+        # If Zygisk is enabled, do nothing
+        :
+    } || {
+        # Zygisk is disabled, remove 'disable' file to enable Zygisk SU
+        rm /data/adb/modules/zygisksu/disable > /dev/null 2>/dev/null
+    }
+else
+    # If busybox path is not Magisk's, remove 'disable' file to enable Zygisk SU
+    rm /data/adb/modules/zygisksu/disable > /dev/null 2>/dev/null
+fi
 
 reboot >/dev/null 2>&1
 
