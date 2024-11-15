@@ -4,6 +4,9 @@
 
 This is a rewrite of Playcurl, the old version became outdated as many things have changed. Paradoxically, this is more lightweight and easier to use.
 
+# Support group
+https://t.me/playfixnext
+
 # How to Use
 - Flash the module. (You must have play integrity fix installed)
 - Reboot.
