@@ -112,6 +112,26 @@ else
     rm /data/adb/modules/zygisksu/disable > /dev/null 2>/dev/null
 fi
 
+# This module is necessary for my phone; otherwise, every test I run causes the phone to go into a bootloop.
+rm /data/adb/modules/daboynb/disable > /dev/null 2>/dev/null
+
+# Rename the existent kb and download the aosp one because if the user has an expired kb, integrity won't pass
+if [ -d /data/adb/modules/tricky_store ]; then 
+    # Rename all .xml files in the directory to have a .bak extension
+    for file in /data/adb/tricky_store/*.xml; do
+        if [ -f "$file" ]; then
+            mv "$file" "${file}.bak"
+        fi
+    done
+    
+    # Download the aosp keybox
+    if /system/bin/curl -o /data/adb/tricky_store/keybox.xml "https://raw.githubusercontent.com/daboynb/autojson/refs/heads/main/aosp_keybox.xml" >/dev/null 2>&1; then
+        echo "[+] Successfully downloaded the aosp keybox."
+    else
+        echo "[-] Failed to download the aosp keybox."
+    fi
+fi
+
 reboot >/dev/null 2>&1
 
 echo "The phone should have rebooted by itself. If you are reading this, reboot manually!"

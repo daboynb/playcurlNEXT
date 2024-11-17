@@ -13,6 +13,7 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 fi
+###################################################################
 
 ###################################################################
 # Read mode.txt and decide branch
@@ -88,3 +89,4 @@ killall com.google.android.gms.unstable >/dev/null 2>&1
 
 echo "[*] End of the script"
 echo ""
+sleep 3
