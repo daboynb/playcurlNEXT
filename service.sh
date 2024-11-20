@@ -32,7 +32,7 @@ fi
 # Copy and set up cron script
 ###################################################################
 # Copy the cron script and set execute permission
-cp /data/adb/modules/playcurlNEXT/system/bin/fp /data/local/tmp/fp.sh
+cp /data/adb/modules/playcurl_NEXT/system/bin/fp /data/local/tmp/fp.sh
 chmod +x /data/local/tmp/fp.sh
 
 # Ensure crontab directory exists

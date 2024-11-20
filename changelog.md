@@ -1,1 +1,1 @@
-V1.09 -> Improve the fpd code and add key selection.
+V1.10 -> Fix an error copying thr fp.sh to tmp.
