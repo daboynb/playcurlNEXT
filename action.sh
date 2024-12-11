@@ -35,8 +35,24 @@ key() {
             break
         fi
 
+###################################################################
+#       Volume Up press                                           #
+###################################################################
         # Detect Volume Up press
         if echo "$keys" | "$busybox_path" grep -q 'KEY_VOLUMEUP.*DOWN'; then
+
+            # Check if the kernel name is banned, banned kernels names from https://xdaforums.com/t/module-play-integrity-fix-safetynet-fix.4607985/post-89308909 and telegram
+            get_kernel_name=$(uname -r)
+            banned_names=("aicp" "arter97" "blu_spark" "caf" "cm-" "crdroid" "cyanogenmod" "deathly" "eas-" "eas" "elementalx" "elite" "franco" "hadeskernel" "lineage-" "lineage" "lineageos" "mokee" "morokernel" "noble" "optimus" "slimroms" "sultan")
+
+            for keyword in "${banned_names[@]}"; do
+                if echo "$get_kernel_name" | "$busybox_path" grep -iq "$keyword"; then
+                    echo
+                    echo "[-] Your kernel name \"$keyword\" is banned."
+                    echo ""
+                    echo "Play integrity fix, Play integrity fix fork and playcurlNEXT won't work."
+                fi
+            done
             
             ###################################################################
             # Read mode.txt and decide branch
@@ -115,8 +131,25 @@ key() {
             sleep 3
             
             return 0 
-        # Detect Volume Down press
+
+###################################################################
+#       Volume Down press                                         #
+###################################################################
         elif echo "$keys" | "$busybox_path" grep -q 'KEY_VOLUMEDOWN.*DOWN'; then
+
+            # Check if the kernel name is banned, banned kernels names from https://xdaforums.com/t/module-play-integrity-fix-safetynet-fix.4607985/post-89308909 and telegram
+            get_kernel_name=$(uname -r)
+            banned_names=("aicp" "arter97" "blu_spark" "caf" "cm-" "crdroid" "cyanogenmod" "deathly" "eas-" "eas" "elementalx" "elite" "franco" "hadeskernel" "lineage-" "lineage" "lineageos" "mokee" "morokernel" "noble" "optimus" "slimroms" "sultan")
+
+            for keyword in "${banned_names[@]}"; do
+                if echo "$get_kernel_name" | "$busybox_path" grep -iq "$keyword"; then
+                    echo
+                    echo "[-] Your kernel name \"$keyword\" is banned."
+                    echo ""
+                    echo "Play integrity fix, Play integrity fix fork and playcurlNEXT won't work."
+                fi
+            done
+
             ###################################################################
             # Read mode.txt and decide branch
             ###################################################################
@@ -221,6 +254,9 @@ key() {
                         mv "$file" "${file}.bak"
                     fi
                 done
+
+                # Enable ts
+                rm /data/adb/modules/tricky_store/disable > /dev/null 2>/dev/null
                 
                 # Download the aosp keybox
                 if /system/bin/curl -o /data/adb/tricky_store/keybox.xml "https://raw.githubusercontent.com/daboynb/autojson/refs/heads/main/aosp_keybox.xml" >/dev/null 2>&1; then
