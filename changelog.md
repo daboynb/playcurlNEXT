@@ -1,1 +1,1 @@
-V1.11 -> kernel string checks added.
+V1.10 -> Fix an error copying thr fp.sh to tmp.

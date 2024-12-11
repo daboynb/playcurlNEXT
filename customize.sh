@@ -26,19 +26,6 @@ rm -rf $MODPATH/system/bin/x86_64
 ###################################################################
 echo "Installing playcurl"
 
-# Check if the kernel name is banned, banned kernels names from https://xdaforums.com/t/module-play-integrity-fix-safetynet-fix.4607985/post-89308909 and telegram
-get_kernel_name=$(uname -r)
-banned_names=("aicp" "arter97" "blu_spark" "caf" "cm-" "crdroid" "cyanogenmod" "deathly" "eas-" "eas" "elementalx" "elite" "franco" "hadeskernel" "lineage-" "lineage" "lineageos" "mokee" "morokernel" "noble" "optimus" "slimroms" "sultan")
-
-for keyword in "${banned_names[@]}"; do
-    if echo "$get_kernel_name" | "$busybox_path" grep -iq "$keyword"; then
-        echo
-        echo "[-] Your kernel name \"$keyword\" is banned."
-        echo ""
-        echo "Play integrity fix, Play integrity fix fork and playcurlNEXT won't work."
-    fi
-done
-
 ###################################################################
 # Removing old app if exists
 ###################################################################
