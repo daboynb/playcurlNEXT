@@ -44,8 +44,8 @@ key() {
             # Default to 'main' branch
             branch="main"
 
-            if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
-                mode_value=$(cat /data/adb/modules/playcurl_NEXT/mode.txt)
+            if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
+                mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
 
                 # If the value in mode.txt is "random", use the random branch
                 if [ "$mode_value" = "random" ]; then
@@ -83,6 +83,9 @@ key() {
                 # Download chiteroman.json from the selected branch
                 if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/$branch/chiteroman.json" -o /data/adb/pif.json >/dev/null 2>&1; then
                     echo "[+] Successfully downloaded chiteroman.json from $branch branch."
+                    sdk_version="$(getprop ro.build.version.sdk)"
+                    sdk_version="${sdk_version:-25}"
+                    "$busybox_path"  sed -E -i "s/\"DEVICE_INITIAL_SDK_INT\": *\"[0-9]+\"/\"DEVICE_INITIAL_SDK_INT\": \"${sdk_version}\"/g" "/data/adb/pif.json"
                 else
                     echo "[-] Failed to download chiteroman.json from $branch branch."
                 fi
@@ -123,8 +126,8 @@ key() {
             # Default to 'main' branch
             branch="main"
 
-            if [ -f "/data/adb/modules/playcurl_NEXT/mode.txt" ]; then
-                mode_value=$(cat /data/adb/modules/playcurl_NEXT/mode.txt)
+            if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
+                mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
 
                 # If the value in mode.txt is "random", use the random branch
                 if [ "$mode_value" = "random" ]; then
@@ -163,6 +166,9 @@ key() {
                 # Download chiteroman.json from the selected branch
                 if /system/bin/curl -L "https://raw.githubusercontent.com/daboynb/autojson/$branch/chiteroman.json" -o /data/adb/pif.json >/dev/null 2>&1; then
                     echo "[+] Successfully downloaded chiteroman.json from $branch branch."
+                    sdk_version="$(getprop ro.build.version.sdk)"
+                    sdk_version="${sdk_version:-25}"
+                    "$busybox_path"  sed -E -i "s/\"DEVICE_INITIAL_SDK_INT\": *\"[0-9]+\"/\"DEVICE_INITIAL_SDK_INT\": \"${sdk_version}\"/g" "/data/adb/pif.json"
                 else
                     echo "[-] Failed to download chiteroman.json from $branch branch."
                 fi

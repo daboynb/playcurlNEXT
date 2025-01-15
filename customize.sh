@@ -24,7 +24,7 @@ rm -rf $MODPATH/system/bin/x86_64
 ###################################################################
 # Install playcurl
 ###################################################################
-echo "Installing playcurl"
+echo "Installing playcurlNEXT"
 
 ###################################################################
 # Removing old app if exists
@@ -40,10 +40,12 @@ if [ -d "/data/adb/modules/playcurl" ]; then
     touch "/data/adb/modules/playcurl/remove"
 fi
 
-# Remove old playcurlNEXT module if it exists
-if [ -d "/data/adb/modules/playcurlNEXT" ]; then
-    touch "/data/adb/modules/playcurlNEXT/remove"
+# Remove old playcurl_NEXT module if it exists
+if [ -d "/data/adb/modules/playcurl_NEXT" ]; then
+    touch "/data/adb/modules/playcurl_NEXT/remove"
 fi
+
+# The actual one is playcurlNEXT
 
 ###################################################################
 # Allow all the scripts to be executable

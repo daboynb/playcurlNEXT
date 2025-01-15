@@ -1,1 +1,1 @@
-V1.10 -> Fix an error copying thr fp.sh to tmp.
+V1.11 -> Update chiteroman json field parsing.
