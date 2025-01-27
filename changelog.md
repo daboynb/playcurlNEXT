@@ -1,1 +1,1 @@
-V1.11 -> Update chiteroman json field parsing.
+V1.12 -> Fix repo url.

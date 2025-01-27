@@ -36,27 +36,8 @@ key() {
         fi
 
         # Detect Volume Up press
-        if echo "$keys" | "$busybox_path" grep -q 'KEY_VOLUMEUP.*DOWN'; then
-            
-            ###################################################################
-            # Read mode.txt and decide branch
-            ###################################################################
-            # Default to 'main' branch
+        if echo "$keys" | "$busybox_path" grep -q 'KEY_VOLUMEUP.*DOWN'; then          
             branch="main"
-
-            if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
-                mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
-
-                # If the value in mode.txt is "random", use the random branch
-                if [ "$mode_value" = "random" ]; then
-                    branch="random"
-                    echo "[*] Using 'random' branch based on mode.txt"
-                else
-                    echo "[*] Using 'main' branch based on mode.txt"
-                fi
-            else
-                echo "[*] mode.txt not found, using 'main' branch by default"
-            fi
 
             ###################################################################
             # Download pif
@@ -120,26 +101,7 @@ key() {
             return 0 
         # Detect Volume Down press
         elif echo "$keys" | "$busybox_path" grep -q 'KEY_VOLUMEDOWN.*DOWN'; then
-            ###################################################################
-            # Read mode.txt and decide branch
-            ###################################################################
-            # Default to 'main' branch
             branch="main"
-
-            if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
-                mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
-
-                # If the value in mode.txt is "random", use the random branch
-                if [ "$mode_value" = "random" ]; then
-                    branch="random"
-                    echo "[*] Using 'random' branch based on mode.txt"
-                else
-                    echo "[*] Using 'main' branch based on mode.txt"
-                fi
-            else
-                echo "[*] mode.txt not found, using 'main' branch by default"
-            fi
-            ###################################################################
 
             ###################################################################
             # Download pif

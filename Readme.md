@@ -23,34 +23,10 @@ https://t.me/playfixnext
 (minimum 1 minute, maximum 1400 minutes)
 Reboot to apply.   
 
-2) You can set whether you want to use a random beta FP from the last month (since multiple are available) or the latest one.
-    - Follow these steps to configure:
-        a) Open the file: `/data/adb/modules/playcurlNEXT/mode.txt`
-        b) Write `random` in the file if you want to use a random FP.
-        c) Write `normal` or leave the file empty if you want to use the latest one.
-
 # Additional Information
 
 - You can manually trigger the action (`action.sh`) if you're using Magisk Canary.
 - You can also run the script in Termux with the following command: su -c 'fp'
-
-# Recommended setups
-
-Instructions for device integrity :
-
-                - Download play integrity fix
-                - Download playcurlNEXT
-                - Install both
-                - Reboot 
-                - Open Spic and check for integrity
-
-Instructions for strong integrity on custom rom:
-        
-                - Install shamiko 
-                - Install Tricky_store and put a valid keybox inside /data/adb/Tricky_store
-                - Install Pif  
-                - enjoy
-
 
 # Broken volume button?
 
@@ -65,7 +41,6 @@ Instructions for strong integrity on custom rom:
 1. rm /data/adb/modules/playcurlNEXT/action.sh
 2. cp /data/adb/modules/playcurlNEXT/system/bin/fpd /data/adb/modules/playcurlNEXT/action.sh
 3. Enjoy!
-
 
 # Credits
 

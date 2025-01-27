@@ -13,27 +13,8 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 fi
-###################################################################
 
-###################################################################
-# Read mode.txt and decide branch
-###################################################################
-# Default to 'main' branch
 branch="main"
-
-if [ -f "/data/adb/modules/playcurlNEXT/mode.txt" ]; then
-    mode_value=$(cat /data/adb/modules/playcurlNEXT/mode.txt)
-
-    # If the value in mode.txt is "random", use the random branch
-    if [ "$mode_value" = "random" ]; then
-        branch="random"
-        echo "[*] Using 'random' branch based on mode.txt"
-    else
-        echo "[*] Using 'main' branch based on mode.txt"
-    fi
-else
-    echo "[*] mode.txt not found, using 'main' branch by default"
-fi
 ###################################################################
 
 ###################################################################
