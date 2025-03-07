@@ -13,7 +13,7 @@ https://t.me/playfixnext
 - Check for integity.
 
 # How it Works
-- At every boot, the fingerprint (fp) will be pulled.
+- At every boot, the fingerprint (fp) will be pulled using the action.sh script of your pif module.
 - Every 30 minutes, the updated fingerprint will be downloaded.
 
 # How to configure extra settings
@@ -23,29 +23,7 @@ https://t.me/playfixnext
 (minimum 1 minute, maximum 1400 minutes)
 Reboot to apply.   
 
-# Additional Information
-
-- You can manually trigger the action (`action.sh`) if you're using Magisk Canary.
-- You can also run the script in Termux with the following command: su -c 'fp'
-
-# Broken volume button?
-
-## Run on Termux (as root)
-
-### To run the FP downloader when the action button is triggered:
-1. rm /data/adb/modules/playcurlNEXT/action.sh
-2. cp /data/adb/modules/playcurlNEXT/system/bin/fp /data/adb/modules/playcurlNEXT/action.sh
-3. Enjoy!
-
-### To run the troubleshooting script when the action button is triggered:
-1. rm /data/adb/modules/playcurlNEXT/action.sh
-2. cp /data/adb/modules/playcurlNEXT/system/bin/fpd /data/adb/modules/playcurlNEXT/action.sh
-3. Enjoy!
-
 # Credits
-
-The backend of this module (autojson repo), was created using **Shell Scripts** that have been carefully adapted and customized from the original work of the **PlayIntegrityFork** module.
-
-The original scripts were forked from the following repository:
+- [chiteroman/PlayIntegrityFix](https://github.com/chiteroman/PlayIntegrityFix)
 
 - [osm0sis/PlayIntegrityFork](https://github.com/osm0sis/PlayIntegrityFork)

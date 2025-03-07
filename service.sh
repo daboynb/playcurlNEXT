@@ -23,7 +23,7 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 else
-    echo "Busybox not found, exiting."
+    echo "Busybox not found, exiting." > /data/adb/playcurl.log
     exit 1
 fi
 ###################################################################
@@ -31,9 +31,17 @@ fi
 ###################################################################
 # Copy and set up cron script
 ###################################################################
-# Copy the cron script and set execute permission
-cp /data/adb/modules/playcurlNEXT/system/bin/fp /data/local/tmp/fp.sh
-chmod +x /data/local/tmp/fp.sh
+action="/data/adb/modules/playintegrityfix/service.sh"
+temp_cron="/data/local/tmp/fp.sh"
+MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
+
+if [ -f "$action" ]; then
+    cp "$action" "$temp_cron"
+    chmod +x "$temp_cron"
+else
+    $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
+    exit
+fi
 
 # Ensure crontab directory exists
 mkdir -p /data/cron
@@ -42,7 +50,7 @@ mkdir -p /data/cron
 ###################################################################
 # Read minutes from configuration
 ###################################################################
-# Read minutes from the file (default to 60 minutes if the file doesn't exist or has an invalid value)
+# Read minutes from the action (default to 60 minutes if the action doesn't exist or has an invalid value)
 minutes=60
 if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
     read_minutes=$(cat /data/adb/modules/playcurlNEXT/minutes.txt)
@@ -63,15 +71,20 @@ if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
         echo "Invalid value in minutes.txt. Defaulting to 1 hour."
     fi
 else
-    echo "File minutes.txt is missing. Defaulting to 1 hour."
+    echo "action minutes.txt is missing. Defaulting to 1 hour."
 fi
 ###################################################################
 
 ###################################################################
 # Set up the cron job
 ###################################################################
-# Set up the cron job with the specified interval in minutes
-echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/root
+# For backward compatibility, remove the old cron file if it exists
+if [ -f /data/cron/root ]; then
+    rm -f /data/cron/root
+fi
+
+# Set up the cron job with the specified interval in minutes using the new file name
+echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/playcurlNEXT
 ###################################################################
 
 ###################################################################
@@ -84,6 +97,6 @@ echo "" >> /data/adb/playcurl.log
 # Run once
 /system/bin/sh /data/local/tmp/fp.sh  >> /data/adb/playcurl.log 
 
-# Conf cron
+# Configure cron daemon
 "$busybox_path" crond -c /data/cron -L /data/adb/playcurl.log 
 ###################################################################
