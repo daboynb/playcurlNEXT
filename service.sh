@@ -49,7 +49,7 @@ fi
 
 # Copy the pif folder to the temp directory
 cp -r "$pif_folder" "$temp_dir"
-chmod -R +x "$temp_dir/"*.sh
+chmod -R +x "$temp_dir"/*.sh
 ###################################################################
 
 ###################################################################
