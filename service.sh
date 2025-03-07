@@ -35,13 +35,20 @@ pif_folder="/data/adb/modules/playintegrityfix"
 temp_dir="/data/local/tmp/pif"
 MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 
-if [ -d "$pif_folder" ]; then
-    cp -r "$pif_folder" "$temp_dir"
-    chmod -R +x "$temp_dir"
-else
+# Check if the action script exists
+if [ ! -f "$pif_folder/action.sh" ]; then
     $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
-    exit
+    exit 1
 fi
+
+# If temp dir exist remove it
+if [ -d "$temp_dir" ]; then
+    rm -rf "$temp_dir"
+fi
+
+# Copy the pif folder to the temp directory
+cp -r "$pif_folder" "$temp_dir"
+chmod -R +x "$temp_dir/"*.sh
 ###################################################################
 
 ###################################################################
@@ -78,12 +85,12 @@ fi
 # Ensure crontab directory exists
 mkdir -p /data/cron
 
-# For backward compatibility, remove the old cron file if it exists
+# Remove the old cron file if it exists
 if [ -f /data/cron/root ]; then
     rm -f /data/cron/root
 fi
 
-# Set up the cron job with the specified interval in minutes using the new file name
+# Set up the cron job
 echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/playcurlNEXT
 ###################################################################
 
