@@ -16,8 +16,7 @@ https://t.me/playfixnext
 - At every boot, the fingerprint (fp) will be pulled using the action.sh script of your pif module.
 - Every hour, the updated fingerprint will be downloaded.
 
-# How to configure extra settings
-
+# How to configure a different time interval
 1) You can set your own check interval by specifying the number of minutes inside the file: 
         `/data/adb/modules/playcurlNEXT/minutes.txt` 
 (minimum 1 minute, maximum 1400 minutes)
