@@ -14,7 +14,7 @@ https://t.me/playfixnext
 
 # How it Works
 - At every boot, the fingerprint (fp) will be pulled using the action.sh script of your pif module.
-- Every 30 minutes, the updated fingerprint will be downloaded.
+- Every hour, the updated fingerprint will be downloaded.
 
 # How to configure extra settings
 
