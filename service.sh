@@ -39,6 +39,7 @@ MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 # Check if the action script exists
 if [ ! -f "$pif_folder/action.sh" ]; then
     $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
+    echo "Unsupported environment, update pif!" > "$log_path"
     exit 1
 fi
 
