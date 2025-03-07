@@ -17,7 +17,7 @@ https://t.me/playfixnext
 - Every hour, the updated fingerprint will be downloaded.
 
 # How to configure a different time interval
-1) You can set your own check interval by specifying the number of minutes inside the file: 
+1) You can set your own time interval by specifying the number of minutes inside the file: 
         `/data/adb/modules/playcurlNEXT/minutes.txt` 
 (minimum 1 minute, maximum 1400 minutes)
 Reboot to apply.   
