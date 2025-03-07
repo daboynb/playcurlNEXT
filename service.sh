@@ -51,6 +51,10 @@ fi
 # Copy the pif folder to the temp directory
 cp -r "$pif_folder" "$temp_dir"
 chmod -R +x "$temp_dir"/*.sh
+
+# Remove unnecessary lines from action.sh
+$busybox_path sed -i '/set +o standalone/d' "$temp_dir/action.sh"
+$busybox_path sed -i '/unset ASH_STANDALONE/d' "$temp_dir/action.sh"
 ###################################################################
 
 ###################################################################
