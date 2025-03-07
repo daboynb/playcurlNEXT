@@ -15,6 +15,7 @@ sleep 10
 ###################################################################
 # Detect busybox path
 busybox_path=""
+log_path="/data/adb/playcurl.log"
 
 if [ -f "/data/adb/magisk/busybox" ]; then
     busybox_path="/data/adb/magisk/busybox"
@@ -23,7 +24,7 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 else
-    echo "Busybox not found, exiting." > /data/adb/playcurl.log
+    echo "Busybox not found, exiting." > "$log_path"
     exit 1
 fi
 ###################################################################
@@ -98,12 +99,12 @@ echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/playcurlNEX
 # Initialize and run scripts
 ###################################################################
 # Init log
-echo "Phone started..." > /data/adb/playcurl.log
-echo "" >> /data/adb/playcurl.log
+echo "Phone started..." > "$log_path"
+echo "" >> "$log_path"
 
 # Run once
-/system/bin/sh /data/local/tmp/action.sh  >> /data/adb/playcurl.log 
+/system/bin/sh /data/local/tmp/action.sh  >> "$log_path" 
 
 # Configure cron daemon
-"$busybox_path" crond -c /data/cron -L /data/adb/playcurl.log 
+"$busybox_path" crond -c /data/cron -L "$log_path" 
 ###################################################################
