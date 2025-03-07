@@ -31,20 +31,17 @@ fi
 ###################################################################
 # Copy and set up cron script
 ###################################################################
-action="/data/adb/modules/playintegrityfix/service.sh"
-temp_cron="/data/local/tmp/fp.sh"
+pif_folder="/data/adb/modules/playintegrityfix"
+temp_dir="/data/local/tmp/pif"
 MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 
-if [ -f "$action" ]; then
-    cp "$action" "$temp_cron"
-    chmod +x "$temp_cron"
+if [ -d "$pif_folder" ]; then
+    cp -r "$pif_folder" "$temp_dir"
+    chmod -R +x "$temp_dir"
 else
     $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
     exit
 fi
-
-# Ensure crontab directory exists
-mkdir -p /data/cron
 ###################################################################
 
 ###################################################################
@@ -78,13 +75,16 @@ fi
 ###################################################################
 # Set up the cron job
 ###################################################################
+# Ensure crontab directory exists
+mkdir -p /data/cron
+
 # For backward compatibility, remove the old cron file if it exists
 if [ -f /data/cron/root ]; then
     rm -f /data/cron/root
 fi
 
 # Set up the cron job with the specified interval in minutes using the new file name
-echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/playcurlNEXT
+echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/playcurlNEXT
 ###################################################################
 
 ###################################################################
@@ -95,7 +95,7 @@ echo "Phone started..." > /data/adb/playcurl.log
 echo "" >> /data/adb/playcurl.log
 
 # Run once
-/system/bin/sh /data/local/tmp/fp.sh  >> /data/adb/playcurl.log 
+/system/bin/sh /data/local/tmp/action.sh  >> /data/adb/playcurl.log 
 
 # Configure cron daemon
 "$busybox_path" crond -c /data/cron -L /data/adb/playcurl.log 
