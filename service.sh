@@ -104,7 +104,7 @@ echo "Phone started..." > "$log_path"
 echo "" >> "$log_path"
 
 # Run once
-/system/bin/sh /data/local/tmp/action.sh  >> "$log_path" 
+/system/bin/sh /data/local/tmp/Pif/action.sh  >> "$log_path" 
 
 # Configure cron daemon
 "$busybox_path" crond -c /data/cron -L "$log_path" 
