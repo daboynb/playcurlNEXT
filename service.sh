@@ -15,6 +15,7 @@ sleep 10
 ###################################################################
 # Detect busybox path
 busybox_path=""
+log_path="/data/adb/playcurl.log"
 
 if [ -f "/data/adb/magisk/busybox" ]; then
     busybox_path="/data/adb/magisk/busybox"
@@ -23,7 +24,7 @@ elif [ -f "/data/adb/ksu/bin/busybox" ]; then
 elif [ -f "/data/adb/ap/bin/busybox" ]; then
     busybox_path="/data/adb/ap/bin/busybox"
 else
-    echo "Busybox not found, exiting."
+    echo "Busybox not found, exiting." > "$log_path"
     exit 1
 fi
 ###################################################################
@@ -31,18 +32,35 @@ fi
 ###################################################################
 # Copy and set up cron script
 ###################################################################
-# Copy the cron script and set execute permission
-cp /data/adb/modules/playcurlNEXT/system/bin/fp /data/local/tmp/fp.sh
-chmod +x /data/local/tmp/fp.sh
+pif_folder="/data/adb/modules/playintegrityfix"
+temp_dir="/data/local/tmp/pif"
+MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 
-# Ensure crontab directory exists
-mkdir -p /data/cron
+# Check if the action script exists
+if [ ! -f "$pif_folder/action.sh" ]; then
+    $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
+    echo "Unsupported environment, update pif!" > "$log_path"
+    exit 1
+fi
+
+# If temp dir exist remove it
+if [ -d "$temp_dir" ]; then
+    rm -rf "$temp_dir"
+fi
+
+# Copy the pif folder to the temp directory
+cp -r "$pif_folder" "$temp_dir"
+chmod -R +x "$temp_dir"/*.sh
+
+# Remove unnecessary lines from action.sh
+$busybox_path sed -i '/set +o standalone/d' "$temp_dir/action.sh"
+$busybox_path sed -i '/unset ASH_STANDALONE/d' "$temp_dir/action.sh"
 ###################################################################
 
 ###################################################################
 # Read minutes from configuration
 ###################################################################
-# Read minutes from the file (default to 60 minutes if the file doesn't exist or has an invalid value)
+# Read minutes from the action (default to 60 minutes if the action doesn't exist or has an invalid value)
 minutes=60
 if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
     read_minutes=$(cat /data/adb/modules/playcurlNEXT/minutes.txt)
@@ -63,27 +81,35 @@ if [ -f "/data/adb/modules/playcurlNEXT/minutes.txt" ]; then
         echo "Invalid value in minutes.txt. Defaulting to 1 hour."
     fi
 else
-    echo "File minutes.txt is missing. Defaulting to 1 hour."
+    echo "action minutes.txt is missing. Defaulting to 1 hour."
 fi
 ###################################################################
 
 ###################################################################
 # Set up the cron job
 ###################################################################
-# Set up the cron job with the specified interval in minutes
-echo "*/$minutes * * * * /data/local/tmp/fp.sh" > /data/cron/root
+# Ensure crontab directory exists
+mkdir -p /data/cron
+
+# Remove the old cron file if it exists
+if [ -f /data/cron/root ]; then
+    rm -f /data/cron/root
+fi
+
+# Set up the cron job
+echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/playcurlNEXT
 ###################################################################
 
 ###################################################################
 # Initialize and run scripts
 ###################################################################
 # Init log
-echo "Phone started..." > /data/adb/playcurl.log
-echo "" >> /data/adb/playcurl.log
+echo "Phone started..." > "$log_path"
+echo "" >> "$log_path"
 
 # Run once
-/system/bin/sh /data/local/tmp/fp.sh  >> /data/adb/playcurl.log 
+/system/bin/sh /data/local/tmp/pif/action.sh  >> "$log_path" 
 
-# Conf cron
-"$busybox_path" crond -c /data/cron -L /data/adb/playcurl.log 
+# Configure cron daemon
+"$busybox_path" crond -c /data/cron -L "$log_path" 
 ###################################################################
