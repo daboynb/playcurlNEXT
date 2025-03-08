@@ -1,1 +1,1 @@
-V1.13 -> Use action.sh of pif instead of autojson, update only if you have an updated pif version!
+V1.14 -> Fixed cron issues with the 1.13 release.
