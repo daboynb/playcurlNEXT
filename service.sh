@@ -97,7 +97,7 @@ if [ ! -f "/data/cron/playcurlNEXT" ]; then
 fi
 
 # Set up the cron job with the specified interval in minutes
-echo "*/$minutes * * * * /system/bin/sh /data/local/tmp/pif/action.sh >> /data/adb/playcurl.log 2>&1" > /data/cron/root
+echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/root
 ###################################################################
 
 ###################################################################
