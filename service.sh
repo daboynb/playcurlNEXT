@@ -92,7 +92,7 @@ fi
 mkdir -p /data/cron
 
 # Set up the cron job
-echo "*/$minutes * * * * /system/bin/sh /data/local/tmp/pif/action.sh" > /data/cron/root
+echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/root
 ###################################################################
 
 ###################################################################
