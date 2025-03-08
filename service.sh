@@ -91,6 +91,11 @@ fi
 # Ensure crontab directory exists
 mkdir -p /data/cron
 
+# Check if pc cron exists
+if [ ! -f "/data/cron/playcurlNEXT" ]; then
+    rm "/data/cron/playcurlNEXT"
+fi
+
 # Set up the cron job with the specified interval in minutes
 echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/root
 ###################################################################
