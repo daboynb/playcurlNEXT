@@ -91,7 +91,7 @@ fi
 # Ensure crontab directory exists
 mkdir -p /data/cron
 
-# Set up the cron job
+# Set up the cron job with the specified interval in minutes
 echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/root
 ###################################################################
 
@@ -103,8 +103,8 @@ echo "Phone started..." > "$log_path"
 echo "" >> "$log_path"
 
 # Run once
-/system/bin/sh /data/local/tmp/pif/action.sh  >> "$log_path" 
+/system/bin/sh /data/local/tmp/pif/action.sh >> "$log_path"
 
 # Configure cron daemon
-"$busybox_path" crond -c /data/cron -L "$log_path" 
+"$busybox_path" crond -c /data/cron -L "$log_path"
 ###################################################################
