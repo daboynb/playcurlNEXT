@@ -91,13 +91,8 @@ fi
 # Ensure crontab directory exists
 mkdir -p /data/cron
 
-# Remove the old cron file if it exists
-if [ -f /data/cron/root ]; then
-    rm -f /data/cron/root
-fi
-
 # Set up the cron job
-echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/playcurlNEXT
+echo "*/$minutes * * * * /system/bin/sh /data/local/tmp/pif/action.sh" > /data/cron/root
 ###################################################################
 
 ###################################################################
