@@ -41,6 +41,10 @@ if [ ! -f "$pif_folder/action.sh" ]; then
     $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
     echo "Unsupported environment, update pif!" > "$log_path"
     exit 1
+else
+    # Action script exists, supported environment
+    $busybox_path sed -i 's/^description=.*/description=Supported environment/' "$MODULE_PROP"
+    echo "Supported environment" > "$log_path"
 fi
 
 # If temp dir exist remove it
