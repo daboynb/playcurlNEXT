@@ -1,1 +1,1 @@
-V1.14 -> Fixed cron issues with the 1.13 release.
+V1.15 -> Fix for issue [#16](https://github.com/daboynb/playcurlNEXT/issues/16)
