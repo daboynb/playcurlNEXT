@@ -33,7 +33,6 @@ fi
 # Copy and set up cron script
 ###################################################################
 pif_folder="/data/adb/modules/playintegrityfix"
-temp_dir="/data/local/tmp/pif"
 MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 
 # Check if the action script exists
@@ -47,18 +46,6 @@ else
     echo "Supported environment" > "$log_path"
 fi
 
-# If temp dir exist remove it
-if [ -d "$temp_dir" ]; then
-    rm -rf "$temp_dir"
-fi
-
-# Copy the pif folder to the temp directory
-cp -r "$pif_folder" "$temp_dir"
-chmod -R +x "$temp_dir"/*.sh
-
-# Remove unnecessary lines from action.sh
-$busybox_path sed -i '/set +o standalone/d' "$temp_dir/action.sh"
-$busybox_path sed -i '/unset ASH_STANDALONE/d' "$temp_dir/action.sh"
 ###################################################################
 
 ###################################################################
@@ -96,12 +83,19 @@ fi
 mkdir -p /data/cron
 
 # Check if pc cron exists
-if [ ! -f "/data/cron/playcurlNEXT" ]; then
-    rm "/data/cron/playcurlNEXT"
+if [ ! -f "/data/cron/root" ]; then
+    rm "/data/cron/root"
 fi
 
 # Set up the cron job with the specified interval in minutes
-echo "*/$minutes * * * * /data/local/tmp/pif/action.sh" > /data/cron/root
+module_contents=$("$busybox_path" cat /data/adb/modules/playintegrityfix/module.prop)
+
+if ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
+    echo "*/$minutes * * * * /data/adb/modules/playintegrityfix/action.sh" > /data/cron/root
+else
+    echo "*/$minutes * * * * /data/adb/modules/playintegrityfix/autopif2.sh" > /data/cron/root
+fi
+
 ###################################################################
 
 ###################################################################
@@ -112,7 +106,25 @@ echo "Phone started..." > "$log_path"
 echo "" >> "$log_path"
 
 # Run once
-/system/bin/sh /data/local/tmp/pif/action.sh >> "$log_path"
+if ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
+    /system/bin/sh /data/adb/modules/playintegrityfix/action.sh >> "$log_path"
+else
+    # grep() migrate.sh 
+    if ! grep -q '^grep()[[:space:]]*{' /data/adb/modules/playintegrityfix/migrate.sh; then
+        sed -i '1a\
+BUSYBOX="'"$busybox_path"'"\
+grep() { "$BUSYBOX" grep "$@"; }' /data/adb/modules/playintegrityfix/migrate.sh
+    fi
+
+    # grep() autopif2.sh
+    if ! grep -q '^grep()[[:space:]]*{' /data/adb/modules/playintegrityfix/autopif2.sh; then
+        sed -i '1a\
+BUSYBOX="'"$busybox_path"'"\
+grep() { "$BUSYBOX" grep "$@"; }' /data/adb/modules/playintegrityfix/autopif2.sh
+    fi
+
+    /system/bin/sh /data/adb/modules/playintegrityfix/autopif2.sh -p >> "$log_path"
+fi
 
 # Configure cron daemon
 "$busybox_path" crond -c /data/cron -L "$log_path"
