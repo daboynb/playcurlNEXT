@@ -83,17 +83,19 @@ fi
 mkdir -p /data/cron
 
 # Check if pc cron exists
-if [ ! -f "/data/cron/root" ]; then
-    rm "/data/cron/root"
+if [ -f "/data/cron/root" ]; then
+    rm -f "/data/cron/root"
 fi
 
 # Set up the cron job with the specified interval in minutes
 module_contents=$("$busybox_path" cat /data/adb/modules/playintegrityfix/module.prop)
 
-if ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
-    echo "*/$minutes * * * * /data/adb/modules/playintegrityfix/action.sh" > /data/cron/root
+if [ -f "/data/adb/modules/playintegrityfix/autopif.sh" ] || [ -f "/data/adb/modules/playintegrityfix/autopif_ota.sh" ]; then
+    echo "*/$minutes * * * * /system/bin/sh /data/adb/modules/playintegrityfix/autopif.sh -p" > /data/cron/root
+elif ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
+    echo "*/$minutes * * * * /system/bin/sh /data/adb/modules/playintegrityfix/action.sh" > /data/cron/root
 else
-    echo "*/$minutes * * * * /data/adb/modules/playintegrityfix/autopif2.sh" > /data/cron/root
+    echo "*/$minutes * * * * /system/bin/sh /data/adb/modules/playintegrityfix/autopif2.sh -p" > /data/cron/root
 fi
 
 ###################################################################
@@ -106,7 +108,12 @@ echo "Phone started..." > "$log_path"
 echo "" >> "$log_path"
 
 # Run once
-if ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
+if [ -f "/data/adb/modules/playintegrityfix/autopif.sh" ] || [ -f "/data/adb/modules/playintegrityfix/autopif_ota.sh" ]; then
+    if [ -f "/data/adb/modules/playintegrityfix/autopif_ota.sh" ]; then
+        /system/bin/sh /data/adb/modules/playintegrityfix/autopif_ota.sh >> "$log_path" || true
+    fi
+    /system/bin/sh /data/adb/modules/playintegrityfix/autopif.sh -p >> "$log_path"
+elif ! echo "$module_contents" | "$busybox_path" grep -q 'Play Integrity Fork'; then
     /system/bin/sh /data/adb/modules/playintegrityfix/action.sh >> "$log_path"
 else
     # grep() migrate.sh 
@@ -126,6 +133,19 @@ grep() { "$BUSYBOX" grep "$@"; }' /data/adb/modules/playintegrityfix/autopif2.sh
     /system/bin/sh /data/adb/modules/playintegrityfix/autopif2.sh -p >> "$log_path"
 fi
 
-# Configure cron daemon
+###################################################################
+# Fix CRLF and set executable permissions for all .sh files
+###################################################################
+for file in /data/adb/modules/playintegrityfix/*.sh; do
+    if [ -f "$file" ]; then
+        echo "Fixing permissions and line endings: $file" >> "$log_path"
+        $busybox_path sed -i 's/\r$//' "$file"
+        chmod +x "$file"
+    fi
+done
+
+###################################################################
+# Start cron daemon
+###################################################################
 "$busybox_path" crond -c /data/cron -L "$log_path"
 ###################################################################

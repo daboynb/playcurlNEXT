@@ -1,5 +1,3 @@
-## As of 03/06/2025, a recent update of PIF from Osmosis has broken this module. For now, it is only compatible with the PIF by Chiteroman until I fix the issue.
-
 # If you'd like to support me:
 
 <a href="https://www.buymeacoffee.com/daboynb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>

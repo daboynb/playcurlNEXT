@@ -1,1 +1,1 @@
-V1.15 -> Fix for issue [#16](https://github.com/daboynb/playcurlNEXT/issues/16)
+V1.17 -> Added support for kow pif.
