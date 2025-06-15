@@ -1,1 +1,1 @@
-V1.17 -> Added support for kow pif.
+V1.18 -> Fixed checks for supported environment.

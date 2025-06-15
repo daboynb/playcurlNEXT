@@ -35,15 +35,16 @@ fi
 pif_folder="/data/adb/modules/playintegrityfix"
 MODULE_PROP="/data/adb/modules/playcurlNEXT/module.prop"
 
-# Check if the action script exists
-if [ ! -f "$pif_folder/action.sh" ]; then
+# Check if any supported PIF script exists
+if [ -f "$pif_folder/action.sh" ] || [ -f "$pif_folder/autopif.sh" ] || [ -f "$pif_folder/autopif_ota.sh" ] || [ -f "$pif_folder/autopif2.sh" ]; then
+    # Supported environment - at least one PIF implementation exists
+    $busybox_path sed -i 's/^description=.*/description=Supported environment/' "$MODULE_PROP"
+    echo "Supported environment" > "$log_path"
+else
+    # No supported PIF implementation found
     $busybox_path sed -i 's/^description=.*/description=Unsupported environment, update pif!/' "$MODULE_PROP"
     echo "Unsupported environment, update pif!" > "$log_path"
     exit 1
-else
-    # Action script exists, supported environment
-    $busybox_path sed -i 's/^description=.*/description=Supported environment/' "$MODULE_PROP"
-    echo "Supported environment" > "$log_path"
 fi
 
 ###################################################################
