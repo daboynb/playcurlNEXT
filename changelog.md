@@ -1,1 +1,1 @@
-V1.18 -> Fixed checks for supported environment.
+V1.19 -> Fix for osmosis.

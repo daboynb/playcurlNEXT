@@ -4,6 +4,10 @@
 
 This is a rewrite of Playcurl, the old version became outdated as many things have changed. Paradoxically, this is more lightweight and easier to use.
 
+# Supported Pif's
+https://github.com/osm0sis/PlayIntegrityFork
+https://github.com/KOWX712/PlayIntegrityFix
+
 # Support group
 https://t.me/playfixnext
 
